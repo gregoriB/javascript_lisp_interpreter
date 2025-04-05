@@ -1,0 +1,16 @@
+{
+  "name": "lisp_interpreter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "format": "npx prettier . -w",
+    "start": "node interpreter.mjs",
+    "test": "node interpreter.mjs test.lisp"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "prettier": "^3.5.3"
+  }
+}
