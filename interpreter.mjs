@@ -59,6 +59,8 @@ function listify(tokens, list = [], i = 1) {
 }
 
 const api = {
+  true: true,
+  false: false,
   "+": (...args) => args.reduce((acc, curr) => curr + acc, 0),
   "-": (...args) => args.reduce((acc, curr) => curr - acc, 0),
   "*": (...args) => args.reduce((acc, curr) => curr * acc, 1),
@@ -83,6 +85,10 @@ function evaluate(expression, scope) {
   }
 
   const keyword = expression[0];
+  if (keyword === "true" || keyword === "false") {
+    return scope[keyword];
+  }
+
   if (keyword === "declare") {
     const [, name, value] = expression;
     scope[name] = evaluate(value, scope);
