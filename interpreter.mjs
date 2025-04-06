@@ -126,7 +126,7 @@ function evaluate(expression, scope) {
   const keyword = expression[0];
 
   if (typeof keyword !== "string") {
-    throw new Error(`${keyword} is not a string!`);
+    throw new Error(`${keyword} should be a string!`);
   }
 
   if (keyword[0] === '"') {
@@ -181,6 +181,7 @@ function run(fileName) {
     const tokens = tokenize(formatted);
     const lists = listifyAll(tokens);
     lists.forEach((list) => evaluate(list, api));
+
   } catch (e) {
     console.error(`FATAL ERROR: ${e}`);
     exit();
