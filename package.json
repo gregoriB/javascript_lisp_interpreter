@@ -5,7 +5,7 @@
   "scripts": {
     "format": "npx prettier . -w",
     "start": "node interpreter.mjs",
-    "test": "node interpreter.mjs test.lisp"
+    "test": "node interpreter.mjs test.scm"
   },
   "author": "",
   "license": "ISC",
