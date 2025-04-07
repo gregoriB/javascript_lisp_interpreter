@@ -1,0 +1,6 @@
+(define square(lambda (x) (* x x)))
+(define x 5)
+(assert x 5)
+(define squared(square x))
+(assert squared 25)
+(print "squared: " squared)

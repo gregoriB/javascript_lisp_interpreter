@@ -1,13 +1,11 @@
-import exp from "constants";
 import fs from "fs";
 import path from "path";
 import { exit } from "process";
 
-console.log("Starting LISP Interpreter");
-
 const args = process.argv.slice(2);
 const validExtensions = [".lisp", ".lsp", ".scm"];
 const lispFileName = args[0];
+const isResiliant = args[1] === "--no-crash";
 
 console.log("Interpretting", lispFileName);
 
@@ -92,7 +90,7 @@ function listifyAll(tokens) {
   return lists[0];
 }
 
-const api = {
+const env = {
   true: true,
   false: false,
   "+": (...args) => args.reduce((acc, curr) => curr + acc, 0),
@@ -105,6 +103,15 @@ const api = {
   ">=": (a, b) => a >= b,
   "<=": (a, b) => a <= b,
   "!=": (a, b) => a != b,
+  list: (...args) => args,
+  at: (arr, i) => arr[i],
+  assert: (a, b, message = "does not equal") => {
+    if (a === b) return;
+    throw new Error(`Assertion failed: ${a} ${message} ${b}`);
+  },
+  fail: (message = "") => {
+    throw new Error(`Intentional Fail: ${message}`);
+  },
   print: console.log,
 };
 
@@ -123,10 +130,12 @@ function evaluate(expression, scope) {
     return;
   }
 
-  const keyword = expression[0];
+  let keyword = expression[0];
 
   if (typeof keyword !== "string") {
-    throw new Error(`${keyword} should be a string!`);
+    for (let item of expression) evaluate(item, scope);
+
+    return;
   }
 
   if (keyword[0] === '"') {
@@ -140,13 +149,10 @@ function evaluate(expression, scope) {
   if (keyword === "define") {
     const [, name, value] = expression;
     if (name in scope)
-      throw new Error(`Cannot redefine a variable using define: "${name}".  Use redefine instead`)
-    scope[name] = evaluate(value, scope);
-    return evaluate(expression.slice(3), scope);
-  }
+      throw new Error(
+        `Cannot redefine a variable using define: "${name}".  Use redefine instead`,
+      );
 
-  if (keyword === "redefine") {
-    const [, name, value] = expression;
     scope[name] = evaluate(value, scope);
     return evaluate(expression.slice(3), scope);
   }
@@ -180,10 +186,10 @@ function run(fileName) {
     const formatted = formatFile(file);
     const tokens = tokenize(formatted);
     const lists = listifyAll(tokens);
-    lists.forEach((list) => evaluate(list, api));
-
+    lists.forEach((list) => evaluate(list, env));
   } catch (e) {
-    console.error(`FATAL ERROR: ${e}`);
+    console.error(`INTERPRETER ERROR: ${e}`);
+    if (!isResiliant) throw e;
     exit();
   }
 
