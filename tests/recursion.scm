@@ -1,7 +1,7 @@
-(define loop(lambda (i limit) 
+(define iterate(lambda (i limit) 
               (if (> i limit) 
-                (print "loop done")
+                (print "iterate done")
                 ((print i) 
-                 (loop (+i 1) limit)))))
+                 (iterate (+i 1) limit)))))
 
-(loop 1 10)
+(iterate 1 10)

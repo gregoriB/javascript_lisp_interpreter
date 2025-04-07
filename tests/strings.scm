@@ -1,4 +1,4 @@
-(define str "This is a test string")
+(define str "Test string")
 (print str)
 
-(assert str "This is a test string")
+(assert str "Test string")

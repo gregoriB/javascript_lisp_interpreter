@@ -104,7 +104,16 @@ const env = {
   "<=": (a, b) => a <= b,
   "!=": (a, b) => a != b,
   list: (...args) => args,
-  at: (arr, i) => arr[i],
+  at: (arr, i) => {
+    if (typeof arr !== "string" && !Array.isArray(arr)) {
+      throw new Error(`${typeof arr} is not compatible with 'at'`);
+    }
+
+    if (i >= arr.length || i < 0) {
+      throw new Error(`index ${i} is not a valid index`);
+    }
+    return arr[i];
+  },
   assert: (a, b, message = "does not equal") => {
     if (a === b) return;
     throw new Error(`Assertion failed: ${a} ${message} ${b}`);
@@ -121,7 +130,9 @@ function evaluate(expression, scope) {
   }
 
   if (typeof expression === "string") {
-    if (expression[0] === '"') return expression;
+    if (expression[0] === '"') {
+      return expression;
+    }
     if (expression in scope) return scope[expression];
     throw new Error(`${expression} is not valid`);
   }
@@ -173,7 +184,13 @@ function evaluate(expression, scope) {
   }
 
   const fn = evaluate(keyword, scope);
-  const args = expression.slice(1).map((arg) => evaluate(arg, scope));
+  const args = expression
+    .slice(1)
+    .map((arg) => evaluate(arg, scope))
+    .map((arg) => {
+      const isQuoted = typeof arg === "string" && arg[0] === '"';
+      return isQuoted ? arg.slice(1, -1) : arg;
+    });
   return fn(...args);
 }
 

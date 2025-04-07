@@ -1,12 +1,12 @@
 {
   "name": "lisp_interpreter",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "run.mjs",
   "scripts": {
     "format": "npx prettier . -w",
-    "start": "node interpreter.mjs",
+    "start": "node run.mjs",
     "interpret": "node interpreter.mjs",
-    "tests": "node run.mjs --test"
+    "test": "node run.mjs --test"
   },
   "author": "",
   "license": "ISC",

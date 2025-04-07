@@ -1,0 +1,13 @@
+(define str "Test string")
+
+(assert (at str 0) "T")
+(assert (at str 1) "e")
+(assert (at str 2) "s")
+(assert (at str 3) "t")
+(assert (at str 4) " ")
+(assert (at str 5) "s")
+(assert (at str 6) "t")
+(assert (at str 7) "r")
+(assert (at str 8) "i")
+(assert (at str 9) "n")
+(assert (at str 10) "g")

@@ -36,7 +36,7 @@ for (const file of readdirSync(dir)) {
 if (isTest) {
   console.log("\n============ TEST RESULTS =============");
   console.log("Total Files Tested: ", passed + failed);
-  console.log("Files Passed: ", passed);
-  console.log("Files Failed: ", failed);
+  console.log("Passed: ", passed);
+  console.log("Failed: ", failed);
   console.log("=======================================\n");
 }
