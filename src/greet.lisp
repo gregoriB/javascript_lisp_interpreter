@@ -1,5 +1,8 @@
-(define greet(lambda (greeting) (print greeting)))
+(define greet(lambda (name) (print "Hello," name)))
 
-(define message "Hello, World!")
+(print "Greetings, user!")
 
-(greet message)
+(define name (input "What is your name? "))
+
+(print "Hello" name "!")
+

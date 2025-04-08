@@ -1,3 +1,4 @@
+import { spawn, spawnSync } from "child_process";
 import fs from "fs";
 import path from "path";
 import { exit } from "process";
@@ -90,6 +91,17 @@ function listifyAll(tokens) {
   return lists[0];
 }
 
+/* Spawns a child process to handle synchronous console input */
+function readlineSync(prompt = "") {
+  const childPath = path.resolve("readline-worker.mjs");
+  const result = spawnSync(process.execPath, [childPath, prompt], {
+    stdio: ["inherit", "pipe", "inherit"],
+    encoding: "utf-8",
+  });
+
+  return result.output[1];
+}
+
 const env = {
   true: true,
   false: false,
@@ -120,6 +132,12 @@ const env = {
   },
   fail: (message = "") => {
     throw new Error(`Intentional Fail: ${message}`);
+  },
+  input: (message) => {
+    if (message) console.log(message);
+
+    const value = readlineSync(message);
+    return value.trim().replace("\n", "").split(message).join("");
   },
   print: console.log,
 };

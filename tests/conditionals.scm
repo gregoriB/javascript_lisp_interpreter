@@ -12,6 +12,8 @@
 (if (!= 1 0) () (fail "branch: != 1 0"))
 (if (== 1 0) (fail "branch: == 1 0") ())
 
+(if (< 1 0) (fail "branch > 1 0"))
+
 (define x 5)
 
 (define ternary1 (if (== x 5) ("yes") ("no")))
